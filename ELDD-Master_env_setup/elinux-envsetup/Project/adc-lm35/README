@@ -1,0 +1,26 @@
+
+1. Patch:
+---------
+0001-ADC-Added-in-km-bbb-am335x.dts-file.patch
+	
+	Modified:  arch/arm/boot/dts/km-bbb-am335x.dts
+
+
+
+2. AM335X ADC Kernel Configuration Options:
+------------------------------------
+	$ cat .config | grep ADC 
+	CONFIG_MFD_TI_AM335X_TSCADC=m
+	CONFIG_TI_AM335X_ADC=m
+
+Adapter & client source code locations:
+---------------------------------------
+	AM335X ADC Driver location: drivers/iio/adc/ti_am335x_adc.c [CONFIG_TI_AM335X_ADC=m]
+
+
+3. Read LM35 Temperature sensor data using iio subsystem [/sys/bus/iio/devices]:
+-------------------------------------------------------------------------------
+	app/adc.c: Read lm35 and potentiometer data.
+
+km@KM-BBB:~$ cat /sys/bus/iio/devices/iio\:device0/in_voltage0_raw 
+385

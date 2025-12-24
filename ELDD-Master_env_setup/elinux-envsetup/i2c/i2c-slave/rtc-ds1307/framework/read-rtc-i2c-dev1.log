@@ -1,0 +1,49 @@
+
+RTC Device Operation Framework:
+--------------------------------
+
+./app/i2c-dev/i2c-dev-rtc.c:  read sec,min. hours from /dev/i2c-1
+
+ int fd = open("/dev/i2c-1", O_RDWR);
+
+        i2c_data.nmsgs = 2;
+        i2c_data.msgs = msg;
+
+        i2c_data.msgs[0].addr = 0x68;
+        i2c_data.msgs[0].len = 1;
+        i2c_data.msgs[0].flags = 0;
+        i2c_data.msgs[0].buf = rtc_addr;
+
+        i2c_data.msgs[1].addr = 0x68;
+        i2c_data.msgs[1].len = 3;
+        i2c_data.msgs[1].flags = I2C_M_RD;
+        i2c_data.msgs[1].buf = rtc_data;
+
+        if (ioctl(fd, I2C_RDWR, &i2c_data) < 0)
+
+---------------------------------------------------------------------------------------
+
+
+run application
+$ ./i2c_rtc
+data = 57, 1, 19                                                                                                                                                                       
+
+$ dmesg
+---------------------------------------------------------------------------------------
+[ 2590.042492] i2c i2c-1: ioctl, cmd=0x707, arg=0xbeea9be4                                                                                                                             
+	cmd -> I2C_RDWR
+[ 2590.042541] i2c i2c-1: master_xfer[0] W, addr=0x68, len=1                                                                                                                           
+[ 2590.042555] i2c i2c-1: master_xfer[1] R, addr=0x68, len=3   
+---------------------------------------------------------------------------------
+[ 214.305040] omap_i2c 4802a000.i2c: addr: 0x0068, len: 1, flags: 0x200, stop: 0                                                                                                      
+[ 2590.042930] omap_i2c 4802a000.i2c: IRQ (ISR = 0x0010)         
+		0x0010 -> 4th Bit Set (XRDY)                                                                                                                      
+[ 2590.043126] omap_i2c 4802a000.i2c: IRQ (ISR = 0x0004)            
+		0x0004 -> 2nd bit set (ARDY)             
+                                                                                                      
+[ 2590.043209] omap_i2c 4802a000.i2c: addr: 0x0068, len: 3, flags: 0x201, stop: 1                                                                                                      
+[ 2590.043641] omap_i2c 4802a000.i2c: IRQ (ISR = 0x0008)           
+		0x0008 -> 3rd Bit Set (RRDY)                                                                                                                      
+[ 2590.043673] omap_i2c 4802a000.i2c: IRQ (ISR = 0x0004)    
+		0x0004 -> 2nd bit set (ARDY)                                                                                                                   
+------------------------------------------------------------------------------------------

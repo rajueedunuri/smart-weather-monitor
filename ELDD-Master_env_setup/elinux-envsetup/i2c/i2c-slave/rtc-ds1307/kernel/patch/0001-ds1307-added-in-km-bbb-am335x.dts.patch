@@ -1,0 +1,51 @@
+From 7c3d36f5e263f0b25df9ea098a6e0612e5727505 Mon Sep 17 00:00:00 2001
+From: Malyadri Illuri <malyadri@raayansystems.com>
+Date: Tue, 21 Jul 2020 12:22:24 +0530
+Subject: [PATCH] ds1307 added in km-bbb-am335x.dts
+
+---
+ arch/arm/boot/dts/km-bbb-am335x.dts | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
+
+diff --git a/arch/arm/boot/dts/km-bbb-am335x.dts b/arch/arm/boot/dts/km-bbb-am335x.dts
+index f760193df..9d1a8d7c2 100644
+--- a/arch/arm/boot/dts/km-bbb-am335x.dts
++++ b/arch/arm/boot/dts/km-bbb-am335x.dts
+@@ -66,6 +66,14 @@
+                         AM33XX_PADCONF(AM335X_PIN_GPMC_AD7, PIN_INPUT_PULLUP, MUX_MODE1) /* gpmc_ad7.mmc1_dat7 */
+                 >;
+         };
++
++	i2c1_pins:pinmux_i2c1_pins{
++		pinctrl-single,pins = <
++		0x15c   0x62    /*P9_17(I2C1_SCL)Using Default Func*/
++		0x158   0x62    /*P9_18(I2C1_SDA)*/
++                >;
++        };
++
+ };
+ 
+ &uart0 {
+@@ -93,4 +101,19 @@
+         status = "okay";
+ };
+ 
++&i2c1 {
++        pinctrl-names = "default";
++        //pinctrl-0 = <&i2c0_pins>;
++        pinctrl-0 = <&i2c1_pins>;
++
++        status = "okay";
++        clock-frequency = <100000>;
++
++        rtc1: ds1307@68 {
++                compatible = "dallas,ds1307";
++                reg = <0x68>;
++                #address-cells = <1>;
++                #size-cells = <1>;
++        };
++};
+ 
+-- 
+2.17.1
+

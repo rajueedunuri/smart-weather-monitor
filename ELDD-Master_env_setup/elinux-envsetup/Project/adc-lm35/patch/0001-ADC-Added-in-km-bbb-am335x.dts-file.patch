@@ -1,0 +1,27 @@
+From e45252acaf01527fda52bbc16a2472108a21ceed Mon Sep 17 00:00:00 2001
+From: boddukishorekumar <kishore@kernelmasters.org>
+Date: Sat, 25 Jul 2020 00:53:34 +0530
+Subject: [PATCH] ADC Added in km-bbb-am335x.dts file
+
+---
+ arch/arm/boot/dts/km-bbb-am335x.dts | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm/boot/dts/km-bbb-am335x.dts b/arch/arm/boot/dts/km-bbb-am335x.dts
+index f760193df..49bf992bc 100644
+--- a/arch/arm/boot/dts/km-bbb-am335x.dts
++++ b/arch/arm/boot/dts/km-bbb-am335x.dts
+@@ -93,4 +93,9 @@
+         status = "okay";
+ };
+ 
+-
++&tscadc {
++	status = "okay";
++	adc {
++	ti,adc-channels = <0 1 >;   //LM35 and  Potentiometer
++	};
++};
+-- 
+2.17.1
+
